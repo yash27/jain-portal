@@ -1,0 +1,7 @@
+{
+  "name": "jain-registration",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
