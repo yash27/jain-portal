@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, ModalController, Platform } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, Platform } from '@ionic/angular';
 import { HomeService } from './home-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from './user.interface';
@@ -28,16 +28,10 @@ export class HomePage {
     private service: HomeService,
     private fb: FormBuilder,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private loadingController: LoadingController
   ) {
-    this.setUsersCountSelectValue();
     this.getDeviceSize();
-  }
-
-  setUsersCountSelectValue(): void {
-    for(let i = 0 ; i <= 10 ; i++) {
-      this.usersCountSelectValue.push(i);
-    }
   }
 
   ngOnInit() {
@@ -70,48 +64,55 @@ export class HomePage {
   }
 
   submitForm() {
-    let user: User = {
-      uniqueId: this.uniqueIdDetails.uniqueId,
-      usersCount: this.userForm.value.usersCount,
-      address: this.userForm.value.address,
-      age: Number(this.userForm.value.age),
-      userName: this.userForm.value.userName?.toLowerCase(),
-      mobileNumber: Number(this.userForm.value.mobileNumber),
-      foodPreference: (this.userForm.value.foodPreference === "true"),
-      stayPreference: (this.userForm.value.stayPreference === "true")
-    }
-    this.service.addUserInFirestore(user).then(success => {
-      this.updateUniqueId(false);
-      this.alertController.create(
-        {
-          header: 'जानकारी',
-          message: 'आपकी जानकारी सफलतापूर्वक जुड़ गई है, आपका रजिस्ट्रेशन नंबर व्हाट्सएप पर दिखाई देगा, व्हाट्सएप खोलने के लिए ओके पर क्लिक करें और सेंड बटन पर क्लिक करें',
-          buttons: [
-            {
-              text: 'Ok',
-              role: 'ok',
-              handler: () => {
-                this.userForm.reset();
-                this.openWhatsappChat(user);
+    this.loadingController.create(
+      {
+        message: 'कृपया प्रतीक्षा करें...'
+      }
+    ).then(loader => {
+      loader.present();
+      let user: User = {
+        uniqueId: this.uniqueIdDetails.uniqueId,
+        address: this.userForm.value.address,
+        age: Number(this.userForm.value.age),
+        userName: this.userForm.value.userName?.toLowerCase(),
+        mobileNumber: Number(this.userForm.value.mobileNumber),
+        foodPreference: (this.userForm.value.foodPreference === "true"),
+        stayPreference: (this.userForm.value.stayPreference === "true")
+      }
+      this.service.addUserInFirestore(user).then(success => {
+        this.updateUniqueId(false);
+        loader.dismiss();
+        this.alertController.create(
+          {
+            header: 'जानकारी',
+            message: 'आपकी जानकारी सफलतापूर्वक जुड़ गई है, आपका रजिस्ट्रेशन नंबर व्हाट्सएप पर दिखाई देगा, व्हाट्सएप खोलने के लिए ओके पर क्लिक करें और सेंड बटन पर क्लिक करें',
+            buttons: [
+              {
+                text: 'Ok',
+                role: 'ok',
+                handler: () => {
+                  this.userForm.reset();
+                  this.openWhatsappChat(user);
+                }
               }
-            }
-          ]
-        }
-      ).then(alert => alert.present());
-    }).catch(error => {
-      this.alertController.create(
-        {
-          header: 'जानकारी',
-          message: 'आपकी जानकारी अभी नहीं जोड़ी गई है, कृपया कुछ समय बाद प्रयास करें',
-          buttons: [
-            {
-              text: 'Ok',
-              role: 'ok'
-            }
-          ]
-        }
-      ).then(alert => alert.present());
-
+            ]
+          }
+        ).then(alert => alert.present());
+      }).catch(error => {
+        loader.dismiss();
+        this.alertController.create(
+          {
+            header: 'जानकारी',
+            message: 'आपकी जानकारी अभी नहीं जोड़ी गई है, कृपया कुछ समय बाद प्रयास करें',
+            buttons: [
+              {
+                text: 'Ok',
+                role: 'ok'
+              }
+            ]
+          }
+        ).then(alert => alert.present());
+      });
     });
   }
 

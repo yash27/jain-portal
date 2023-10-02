@@ -55,6 +55,13 @@ ion-content {
     h3 {
       text-decoration: underline;
     }
+    .footerText {
+      border-top-right-radius: 10px;
+      border-top-left-radius: 10px;
+      background: #00000050;
+      color: white;
+      padding: 0.5rem;
+    }
   }
 }
 

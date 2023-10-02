@@ -56,15 +56,6 @@
                   </ion-col>
                   <ion-col [size]="12">
                     <ion-item class="formInput">
-                      <ion-select formControlName="usersCount" label="आपके साथ कितने लोग आने वाले हैं?" label-placement="floating"
-                        interface="popover">
-                        <ion-select-option *ngFor="let count of usersCountSelectValue" value="{{count}}">{{count}}</ion-select-option>
-                      </ion-select>
-                    </ion-item>
-                    <ion-label *ngIf="userForm.controls.usersCount.touched && userForm.controls.usersCount.invalid" color="danger">कृपया भोजन की प्राथमिकता चुनें</ion-label>
-                  </ion-col>
-                  <ion-col [size]="12">
-                    <ion-item class="formInput">
                       <ion-select formControlName="foodPreference" label="क्या आप शोध (सोला) का भोजन ग्रहण करते हैं ?" label-placement="floating"
                         interface="popover">
                         <ion-select-option aria-label="true" value="true">हाँ</ion-select-option>
@@ -107,6 +98,7 @@
     <h3>अखिल भारतीय तारण तरण जैन समाज परासिया 2023</h3>
     <h4>अधिक जानकारी या कोई सुचना सुझाव के लिए संपर्क करे!</h4>
     <h4>नितिन जैन: +91-9039250241</h4>
-    <p class="ion-no-margin"><b>Project Developed by: Yash Jain</b></p>
+    <br>
+    <span class="ion-no-margin footerText">Project Developed by: Yash Jain</span>
   </div>
 </ion-content>

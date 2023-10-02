@@ -5,6 +5,5 @@ export interface User {
   foodPreference: boolean | undefined | null;
   mobileNumber: number | undefined | null;
   stayPreference: boolean | undefined | null;
-  usersCount: number | undefined | null;
   uniqueId: number | undefined | null;
 }
