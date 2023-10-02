@@ -43,12 +43,6 @@ export class HomePage {
   ngOnInit() {
     this.fetchAndStoreUniqueId();
     this.service.fetchAdminLoginsFromFirestore();
-    this.openAdminPanelModal({
-      adminId: "yash",
-      password: "123",
-      superUser: true,
-      id: "DIf0YJhlpx5fK9TkWl25"
-    });
   }
 
   fetchAndStoreUniqueId() {

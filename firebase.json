@@ -2,8 +2,15 @@
   "hosting": [
     {
       "target": "app",
-      "source": ".",
-      "frameworksBackend": {}
+      "frameworksBackend": {},
+      "public": "www",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ]
 }

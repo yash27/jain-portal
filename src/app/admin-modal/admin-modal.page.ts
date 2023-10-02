@@ -11,12 +11,14 @@ export class AdminModalPage implements OnInit {
 
   segmentTabValue: string = "users";
   users: any = [];
-  loggedInUser: any = {
-    adminId: "yash",
-    password: "123",
-    superUser: true,
-    id: "DIf0YJhlpx5fK9TkWl25"
-  };
+  loggedInUser: any = {};
+  // Enable this user for testing
+  // loggedInUser: any = {
+  //   adminId: "yash",
+  //   password: "123",
+  //   superUser: true,
+  //   id: "DIf0YJhlpx5fK9TkWl25"
+  // };
   userSearchKeyword: string = '';
 
   constructor(
