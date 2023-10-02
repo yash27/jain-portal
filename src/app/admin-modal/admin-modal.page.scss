@@ -1,0 +1,60 @@
+ion-content {
+    --background: linear-gradient(180deg, #e2e3c9, #e5db89) !important;
+
+    .headingSection {
+        .usersListText {
+            margin: 0;
+            text-align: center;
+        }
+    }
+
+    .usersListContainer {
+        position: relative;
+        
+        .noUsersList {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .usersListAccordion {
+        margin: 0 !important;
+    }
+
+    .accordionData {
+        position: relative;
+        .deleteUserIcon {
+            position: absolute;
+            right: 1rem;
+            transform: scale(1.2);
+            color: #b10c0c !important;
+            z-index: 2
+        }
+    }
+
+    .paddedRow {
+        padding-left: 0.4rem;
+    }
+
+    .trueValue {
+        color: #0ad40a;
+    }
+
+    .falseValue {
+        color: red;
+    }
+}
+
+ion-footer {
+    ion-toolbar {
+        --background: linear-gradient(180deg, #e5db89, #dfd587) !important;
+        ion-searchbar {
+            padding-top: 15px;
+        }
+        .searchBarSearchBtn {
+            color: #1d1c1c;
+            margin-top: 1rem;
+        }
+    }
+}

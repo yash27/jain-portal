@@ -1,20 +1,112 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar mode="ios" color="primary">
     <ion-title>
-      Blank
+      Jain Portal
     </ion-title>
+    <ion-button slot="end" (click)="openAdminPanel()">
+      <ion-icon class="adminButton" name="person-circle-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <ion-grid class="contentHeaderGrid">
+    <ion-row>
+      <ion-col>
+        <h2>वेदीप्रतिष्ठा महोत्सव २०२४,परासिया</h2>
+        <div class="contentHeaderImageContainer">
+          <ion-img src="assets/images/bg.jpg" alt="Taaran Taran Chatyaalaya" class="contentHeaderImage"></ion-img>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="formContentContainer">
+    <form [formGroup]="userForm">
+      <ion-grid>
+        <ion-row>
+          <ion-col [size]="getDeviceSize()">
+          </ion-col>
+          <ion-col [size]="getDeviceSize() === 3 ? 6 : 12" class="formContentContainerColumn">
+            <p class="formContentSubDetails" style="margin: 0;">
+              तारण तरण समाज,परासिया द्वारा आयोजित भव्य प्रतिष्ठा महोत्सव में आप सम्मिलित होना चाहते हैं,तो कृपया इस
+              फॉर्म
+              को भरकर आज ही अपना स्थान सुरक्षित करे। ताकी हम इस कार्य को उत्कृष्ट रूप से संयोजित कर सकें।
+            </p>
+            <div class="formContainer">
+              <ion-grid>
+                <ion-row>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-input formControlName="userName" label="पूरा नाम" labelPlacement="floating" placeholder="आपका नाम"></ion-input>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.userName.touched && userForm.controls.userName.invalid" color="danger">कृपया अपना नाम दर्ज करें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-input formControlName="address" label="आपका पता शहर के नाम के साथ" labelPlacement="floating"
+                        placeholder="आपका पता"></ion-input>
+                      </ion-item>
+                      <ion-label *ngIf="userForm.controls.address.touched && userForm.controls.address.invalid" color="danger">कृपया अपना पता दर्ज करें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-input formControlName="age" type="number" label="आपकी आयु" labelPlacement="floating" placeholder="आयु"></ion-input>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.age.touched && userForm.controls.age.invalid" color="danger">कृपया अपनी उम्र दर्ज करें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-select formControlName="usersCount" label="आपके साथ कितने लोग आने वाले हैं?" label-placement="floating"
+                        interface="popover">
+                        <ion-select-option *ngFor="let count of usersCountSelectValue" value="{{count}}">{{count}}</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.usersCount.touched && userForm.controls.usersCount.invalid" color="danger">कृपया भोजन की प्राथमिकता चुनें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-select formControlName="foodPreference" label="क्या आप शोध (सोला) का भोजन ग्रहण करते हैं ?" label-placement="floating"
+                        interface="popover">
+                        <ion-select-option aria-label="true" value="true">हाँ</ion-select-option>
+                        <ion-select-option aria-label="false" value="false">नहीं</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.foodPreference.touched && userForm.controls.foodPreference.invalid" color="danger">कृपया भोजन की प्राथमिकता चुनें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-select formControlName="stayPreference" label="क्या आपको सामाजिक आवासीय व्यवस्था चाहिए ?" label-placement="floating"
+                        interface="popover">
+                        <ion-select-option aria-label="true" value="true">हाँ</ion-select-option>
+                        <ion-select-option aria-label="false" value="false">नहीं</ion-select-option>
+                      </ion-select>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.stayPreference.touched && userForm.controls.stayPreference.invalid" color="danger">कृपया ठहरने की प्राथमिकता चुनें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12">
+                    <ion-item class="formInput">
+                      <ion-input formControlName="mobileNumber" type="number" label="आपका व्हाट्सएप्प नंबर" labelPlacement="floating"
+                        placeholder="आपका व्हाट्सएप्प नंबर लिखिए "></ion-input>
+                    </ion-item>
+                    <ion-label *ngIf="userForm.controls.mobileNumber.touched && userForm.controls.mobileNumber.invalid" color="danger">कृपया अपना सही व्हाट्सएप नंबर दर्ज करें</ion-label>
+                  </ion-col>
+                  <ion-col [size]="12" class="submitButtonColumn">
+                    <ion-button (click)="clearForm()" [disabled]="!userForm.touched" color="secondary" fill="outline" shape="round">फॉर्म क्लियर करे </ion-button>
+                    <ion-button (click)="submitForm()" [disabled]="userForm.invalid" color="secondary" shape="round">जानकारी जमा करे </ion-button>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-col>
+          <ion-col [size]="getDeviceSize()"></ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+  <div class="footer">
+    <h3>अखिल भारतीय तारण तरण जैन समाज परासिया 2023</h3>
+    <h4>अधिक जानकारी या कोई सुचना सुझाव के लिए संपर्क करे!</h4>
+    <h4>नितिन जैन: +91-9039250241</h4>
+    <p class="ion-no-margin"><b>Project Developed by: Yash Jain</b></p>
   </div>
 </ion-content>

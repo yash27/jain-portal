@@ -1,0 +1,104 @@
+<ion-header [translucent]="true">
+  <ion-toolbar mode="ios" color="primary">
+    <ion-title>Admin Portal</ion-title>
+    <ion-buttons slot="end" (click)="closeModal()">
+      <ion-button><b>Close</b></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar mode="ios" color="primary">
+    <ion-segment mode="ios" value="{{segmentTabValue}}" (ionChange)="onTabChange($event)">
+      <ion-segment-button value="users">
+        <ion-label>Users List</ion-label>
+      </ion-segment-button>
+      <ion-segment-button *ngIf="loggedInUser.superUser" value="settings">
+        <ion-label>Admin Settings</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-grid>
+    <ion-row>
+      <ion-col class="usersListContainer" size="12" *ngIf="segmentTabValue === 'users'">
+        <ion-accordion-group expand="inset" class="usersListAccordion" *ngIf="users.length > 0">
+          <ion-accordion *ngFor="let user of users" value="{{user.id}}">
+            <ion-item slot="header" color="medium">
+              <ion-label>
+                <ion-chip color="warning"><b>{{user.uniqueId}}</b></ion-chip>
+                {{user.userName}}
+              </ion-label>
+            </ion-item>
+            <div class="ion-padding accordionData" slot="content">
+              <ion-icon color="danger" name="trash-outline" class="deleteUserIcon" (click)="deleteUser(user.id)"></ion-icon>
+              <ion-item>
+                <ion-label text-wrap>
+                  <p>Address</p>
+                  <h3>{{user.address}}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-label>
+                  <p>Mobile Number</p>
+                  <h3>{{user.mobileNumber}}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-grid>
+                <ion-row class="paddedRow">
+                  <ion-col size="6">
+                    <ion-item class="ion-no-padding">
+                      <ion-label>
+                        <p>Food Preference</p>
+                        <h3 [ngClass]="user.foodPreference ? 'trueValue' : 'falseValue'">{{user.foodPreference ? 'Yes' : 'No'}}</h3>
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-item class="ion-no-padding">
+                      <ion-label>
+                        <p>Stay Preference</p>
+                        <h3 [ngClass]="user.stayPreference ? 'trueValue' : 'falseValue'">{{user.stayPreference ? 'Yes' : 'No'}}</h3>
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+                <ion-row class="paddedRow">
+                  <ion-col size="6">
+                    <ion-item class="ion-no-padding">
+                      <ion-label>
+                        <p>Age</p>
+                        <h3>{{user.age}}</h3>
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                  <ion-col size="6">
+                    <ion-item class="ion-no-padding">
+                      <ion-label>
+                        <p>Users Count</p>
+                        <h3>{{user.usersCount}}</h3>
+                      </ion-label>
+                    </ion-item>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+        <div class="noUsersList" *ngIf="users.length === 0">
+          <h4>No Users Registered</h4>
+        </div>
+      </ion-col>
+      <ion-col size="12" *ngIf="segmentTabValue === 'settings'">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer mode="ios" color="primary" *ngIf="segmentTabValue === 'users'">
+  <ion-toolbar>
+    <ion-searchbar (ionClear)="resetUsersList()" placeholder="Search by Name or Reg No." name="userSearchKeyword" [(ngModel)]="userSearchKeyword"></ion-searchbar>
+    <ion-buttons slot="end" (click)="onUserSearch()">
+      <ion-button><b class="searchBarSearchBtn">Search</b></ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

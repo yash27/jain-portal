@@ -11,6 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
+  {
+    path: 'admin-modal',
+    loadChildren: () => import('./admin-modal/admin-modal.module').then( m => m.AdminModalPageModule)
+  },
 ];
 
 @NgModule({

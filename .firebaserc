@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "jain-portal-52ef6": {
+      "hosting": {
+        "app": [
+          "jain-portal-52ef6"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "jain-portal-52ef6"
+  }
+}

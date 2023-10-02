@@ -1,27 +1,93 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+ion-header {
+  ion-toolbar {
+    ion-button {
+      .adminButton {
+        transform: scale(1.4);
+      }
+    }
+  }
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-content {
+  --background: linear-gradient(180deg, #e2e3c9, #e5db89) !important;
+  .contentHeaderGrid {
+    ion-row {
+      ion-col {
+        text-align: center;
+        h2 {
+          font-weight: bold;
+        }
+        .contentHeaderImageContainer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .contentHeaderImage::part(image) {
+            border-radius: 25px !important;
+            height: auto;
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+  .formContentContainer {
+    .formContentContainerColumn {
+      background-color: rgba(0, 0, 0, 0.458);
+      border-radius: 10px;
+      color: white;
+      .formContentSubDetails {
+        text-align: center;
+      }
+    }
+    .formContainer {
+      .formInput {
+        --background: rgba(255, 255, 255, 0.256);
+        border-radius: 10px;
+        color: white;
+      }
+      .submitButtonColumn {
+        text-align: center;
+      }
+    }
+  }
+  .footer {
+    text-align: center;
+    h3 {
+      text-decoration: underline;
+    }
+  }
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+@media (max-width: 480px) {
+  .contentHeaderImage::part(image) {
+    max-width: 100%;
+  }
 }
 
-#container a {
-  text-decoration: none;
+/* Media Query for low resolution  Tablets, Ipads */
+@media (min-width: 481px) and (max-width: 767px) {
+  .contentHeaderImage::part(image) {
+    max-width: 70%;
+  }
+}
+
+/* Media Query for Tablets Ipads portrait mode */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .contentHeaderImage::part(image) {
+    max-width: 60%;
+  }
+}
+
+/* Media Query for Laptops and Desktops */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .contentHeaderImage::part(image) {
+    max-width: 50%;
+  }
+}
+
+/* Media Query for Large screens */
+@media (min-width: 1281px) {
+  .contentHeaderImage::part(image) {
+    max-width: 40%;
+  }
 }
