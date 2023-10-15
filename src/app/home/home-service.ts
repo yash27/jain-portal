@@ -20,16 +20,21 @@ import { User } from './user.interface';
 export class HomeService {
 
   private readonly userInstanceName: string = 'users';
-  private readonly uniqueIdInstanceName: string = 'uniqueId';
+  private readonly foodPreferenceUniqueIdInstanceName: string = 'foodPreferenceUniqueId';
+  private readonly nonFoodPreferenceUniqueIdInstanceName: string = 'nonFoodPreferenceUniqueId';
   private readonly adminLoginsInstanceName: string = 'adminUsers';
 
   private userCollectionInstance = collection(this.firestore, this.userInstanceName);
-  private uniqueIdCollectionInstance = collection(this.firestore, this.uniqueIdInstanceName);
+  private foodPreferenceUniqueIdCollectionInstance = collection(this.firestore, this.foodPreferenceUniqueIdInstanceName);
+  private nonFoodPreferenceUniqueIdCollectionInstance = collection(this.firestore, this.nonFoodPreferenceUniqueIdInstanceName);
   private adminLoginsCollectionInstance = collection(this.firestore, this.adminLoginsInstanceName);
    
   users$ = collectionData(this.userCollectionInstance, {idField: 'id'}) as Observable<User[]>;
-  uniqueId$ = collectionData(this.uniqueIdCollectionInstance, {idField: 'id'}) as Observable<any>;
+  foodPreferenceUniqueId$ = collectionData(this.foodPreferenceUniqueIdCollectionInstance, {idField: 'id'}) as Observable<any>;
+  nonFoodPreferenceUniqueId$ = collectionData(this.nonFoodPreferenceUniqueIdCollectionInstance, {idField: 'id'}) as Observable<any>;
   adminLogins$ = collectionData(this.adminLoginsCollectionInstance, {idField: 'id'}) as Observable<any>;
+
+  uniqueIdDetails: any = {};
 
   constructor(private firestore: Firestore) {}
 
@@ -37,6 +42,19 @@ export class HomeService {
 
   fetchUsersFromFirestore() {
     return this.users$;
+  }
+
+  fetchAndStoreUniqueId() {
+    this.getFoodPreferenceUniqueId().subscribe((uniqueIdDetails) => {
+      if (uniqueIdDetails && uniqueIdDetails.length > 0) {
+        this.uniqueIdDetails.foodPreferenceUniqueId = uniqueIdDetails[0];
+      }
+    });
+    this.getNonFoodPreferenceUniqueId().subscribe((uniqueIdDetails) => {
+      if (uniqueIdDetails && uniqueIdDetails.length > 0) {
+        this.uniqueIdDetails.nonFoodPreferenceUniqueId = uniqueIdDetails[0];
+      }
+    });
   }
 
   fetchAdminLoginsFromFirestore() {
@@ -64,13 +82,18 @@ export class HomeService {
     );
     return userList;
   }
-  
-  getUniqueId() {
-    return this.uniqueId$;
+
+  getFoodPreferenceUniqueId() {
+    return this.foodPreferenceUniqueId$;
   }
 
-  updateUniqueId(uniqueIdDetails: any) {
-    const docInstance = doc(this.firestore, this.uniqueIdInstanceName, uniqueIdDetails.id);
+  getNonFoodPreferenceUniqueId() {
+    return this.nonFoodPreferenceUniqueId$;
+  }
+
+  updateUniqueId(uniqueIdDetails: any, preference: string) {
+    let docInstance;
+    preference === 'food' ? docInstance = doc(this.firestore, this.foodPreferenceUniqueIdInstanceName, uniqueIdDetails.id) : docInstance = doc(this.firestore, this.nonFoodPreferenceUniqueIdInstanceName, uniqueIdDetails.id);
     updateDoc(docInstance, {uniqueId: uniqueIdDetails.uniqueId});
   }
 }

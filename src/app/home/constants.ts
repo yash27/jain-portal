@@ -1,0 +1,4 @@
+export class Constants {
+    static FOOD_PREFERENCE_UNIQUE_ID_CONSTANT = 50000;
+    static NON_FOOD_PREFERENCE_UNIQUE_ID_CONSTANT = 10000;
+}
