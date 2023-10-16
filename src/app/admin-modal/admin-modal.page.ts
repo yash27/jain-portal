@@ -64,6 +64,7 @@ export class AdminModalPage implements OnInit {
 
   async onUserSearch() {
     this.users = await this.service.getSpecificUserFromFirestore(this.userSearchKeyword);
+    this.segregateUsersBasedOnFoodPreference(this.users);
   }
 
   deleteUser(id: string) {
