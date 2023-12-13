@@ -13,9 +13,18 @@
   <ion-grid class="contentHeaderGrid">
     <ion-row>
       <ion-col>
-        <h2>वेदीप्रतिष्ठा महोत्सव २०२४,परासिया</h2>
         <div class="contentHeaderImageContainer">
-          <ion-img src="assets/images/bg.jpg" alt="Taaran Taran Chatyaalaya" class="contentHeaderImage"></ion-img>
+          <ion-img src="assets/images/logo_bg.png" alt="headerImage" class="contentHeaderImage"></ion-img>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="contentHeaderGrid">
+    <ion-row>
+      <ion-col>
+        <!-- <h2>वेदीप्रतिष्ठा महोत्सव २०२४,परासिया</h2> -->
+        <div class="contentHeaderImageContainer">
+          <ion-img src="assets/images/bg_2.jpg" alt="Taaran Taran Chatyaalaya" class="contentHeaderImage"></ion-img>
         </div>
       </ion-col>
     </ion-row>
@@ -82,8 +91,8 @@
                     <ion-label *ngIf="userForm.controls.mobileNumber.touched && userForm.controls.mobileNumber.invalid" color="danger">कृपया अपना सही व्हाट्सएप नंबर दर्ज करें</ion-label>
                   </ion-col>
                   <ion-col [size]="12" class="submitButtonColumn">
-                    <ion-button (click)="clearForm()" [disabled]="!userForm.touched" color="secondary" fill="outline" shape="round">फॉर्म क्लियर करे </ion-button>
                     <ion-button (click)="submitForm()" [disabled]="userForm.invalid" color="secondary" shape="round">जानकारी जमा करे </ion-button>
+                    <ion-button (click)="clearForm()" [disabled]="!userForm.touched" color="secondary" fill="outline" shape="round">फॉर्म क्लियर करे </ion-button>
                   </ion-col>
                 </ion-row>
               </ion-grid>

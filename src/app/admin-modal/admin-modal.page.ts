@@ -4,6 +4,7 @@ import { HomeService } from '../home/home-service';
 import { User } from '../home/user.interface';
 import { HomePage } from '../home/home.page';
 import { Constants } from '../home/constants';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-admin-modal',
@@ -15,15 +16,8 @@ export class AdminModalPage implements OnInit {
   segmentTabValue: string = "users";
   users: any[] = [];
   loggedInUser: any = {};
-  // Enable this user for testing
-  // loggedInUser: any = {
-  //   adminId: "yash",
-  //   password: "123",
-  //   superUser: true,
-  //   id: "DIf0YJhlpx5fK9TkWl25"
-  // };
   userSearchKeyword: string = '';
-  segUsers: any = {
+  segregatedUsers: any = {
     withFoodPreference: [],
     withoutFoodPreference: []
   }
@@ -48,10 +42,8 @@ export class AdminModalPage implements OnInit {
   }
 
   segregateUsersBasedOnFoodPreference(users: User[]) {
-    this.segUsers.withFoodPreference = users.filter(user => user.foodPreference === true);
-    this.segUsers.withoutFoodPreference = users.filter(user => user.foodPreference === false);
-    console.clear();
-    console.log(this.segUsers);
+    this.segregatedUsers.withFoodPreference = users.filter(user => user.foodPreference === true);
+    this.segregatedUsers.withoutFoodPreference = users.filter(user => user.foodPreference === false);
   }
 
   onTabChange(event: any) {
@@ -128,8 +120,60 @@ export class AdminModalPage implements OnInit {
       this.service.deleteUserFromFirestore(user.id);
     });
   }
-    
 
+  exportDataToExcel() {
+    this.alertController.create(
+      {
+        header: 'Confirmation',
+        message: 'Are you sure, you want to export users data into excel',
+        buttons: [
+          {
+            text: 'Cancel',
+            cssClass: 'adminPanelAlertBtns',
+            role: 'cancel'
+          },
+          {
+            text: 'Export',
+            cssClass: 'adminPanelAlertBtns',
+            handler: () => {
+              const users = [...this.users];
+              const allUsers = users.map(obj => {
+                const { id, ...newObj } = obj;
+                const modifiedObj: any = {};
+                for (const key in newObj) {
+                  modifiedObj[key.toUpperCase()] = newObj[key];
+                }
+                return modifiedObj;
+              });
+              const ws: XLSX.WorkSheet =XLSX.utils.json_to_sheet(allUsers);
+              const wb: XLSX.WorkBook = XLSX.utils.book_new();
+              const wscols = [
+                {
+                  width: 20
+                },{
+                  width: 20
+                },{
+                  width: 20
+                },{
+                  width: 20
+                },{
+                  width: 20
+                },{
+                  width: 20
+                },{
+                  width: 20
+                }
+              ];
+              ws['!cols'] = wscols;
+              XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');  
+              XLSX.writeFile(wb, 'JainPortalUsersList:' + new Date().toISOString() + '.xlsx');
+            }
+          }
+        ]
+      }
+    ).then(alert => alert.present());
+  }
+    
   showToastMessage(msg: string) {
     this.toastController.create(
       {

@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar mode="ios" color="primary">
     <ion-title>Admin Portal</ion-title>
+    <ion-buttons slot="start" (click)="exportDataToExcel()">
+      <ion-button><b>Export</b></ion-button>
+    </ion-buttons>
     <ion-buttons slot="end" (click)="closeModal()">
       <ion-button><b>Close</b></ion-button>
     </ion-buttons>
@@ -32,11 +35,11 @@
     <ion-row>
       <ion-col class="usersListContainer" size="12" *ngIf="segmentTabValue === 'users'">
         <ng-container *ngIf="isFoodPreferenceSelectedForView; else nonFoodPreferenceTemplate">
-          <ion-accordion-group expand="inset" class="usersListAccordion" *ngIf="segUsers.withFoodPreference.length > 0">
-            <ion-accordion *ngFor="let user of segUsers.withFoodPreference" value="{{user.id}}">
+          <ion-accordion-group expand="inset" class="usersListAccordion" *ngIf="segregatedUsers.withFoodPreference.length > 0">
+            <ion-accordion *ngFor="let user of segregatedUsers.withFoodPreference" value="{{user.id}}">
               <ion-item slot="header" color="medium">
                 <ion-label>
-                  <ion-chip color="warning"><b>{{user.uniqueId}}</b></ion-chip>
+                  <ion-chip color="danger"><b>{{user.uniqueId}}</b></ion-chip>
                   {{user.userName}}
                 </ion-label>
               </ion-item>
@@ -92,91 +95,111 @@
               </div>
             </ion-accordion>
           </ion-accordion-group>
-          <div class="noUsersList" *ngIf="segUsers.withFoodPreference.length === 0">
-            <h4>No Users Registered</h4>
+          <div class="noUsersList" *ngIf="segregatedUsers.withFoodPreference.length === 0">
+            <h4>No Users Found</h4>
           </div>
         </ng-container>
         <ng-template #nonFoodPreferenceTemplate>
-            <ion-accordion-group expand="inset" class="usersListAccordion" *ngIf="segUsers.withoutFoodPreference.length > 0">
-              <ion-accordion *ngFor="let user of segUsers.withoutFoodPreference" value="{{user.id}}">
-                <ion-item slot="header" color="medium">
-                  <ion-label>
-                    <ion-chip color="warning"><b>{{user.uniqueId}}</b></ion-chip>
-                    {{user.userName}}
+          <ion-accordion-group expand="inset" class="usersListAccordion"
+            *ngIf="segregatedUsers.withoutFoodPreference.length > 0">
+            <ion-accordion *ngFor="let user of segregatedUsers.withoutFoodPreference" value="{{user.id}}">
+              <ion-item slot="header" color="medium">
+                <ion-label>
+                  <ion-chip color="danger"><b>{{user.uniqueId}}</b></ion-chip>
+                  {{user.userName}}
+                </ion-label>
+              </ion-item>
+              <div class="ion-padding accordionData" slot="content">
+                <ion-icon color="danger" name="trash-outline" class="deleteUserIcon"
+                  (click)="deleteUser(user.id)"></ion-icon>
+                <ion-item>
+                  <ion-label text-wrap>
+                    <p>Address</p>
+                    <h3>{{user.address}}</h3>
                   </ion-label>
                 </ion-item>
-                <div class="ion-padding accordionData" slot="content">
-                  <ion-icon color="danger" name="trash-outline" class="deleteUserIcon"
-                    (click)="deleteUser(user.id)"></ion-icon>
-                  <ion-item>
-                    <ion-label text-wrap>
-                      <p>Address</p>
-                      <h3>{{user.address}}</h3>
-                    </ion-label>
-                  </ion-item>
-                  <ion-grid>
-                    <ion-row class="paddedRow">
-                      <ion-col size="6">
-                        <ion-item class="ion-no-padding">
-                          <ion-label>
-                            <p>Mobile Number</p>
-                            <h3>{{user.mobileNumber}}</h3>
-                          </ion-label>
-                        </ion-item>
-                      </ion-col>
-                      <ion-col size="6">
-                        <ion-item class="ion-no-padding">
-                          <ion-label>
-                            <p>Age</p>
-                            <h3>{{user.age}}</h3>
-                          </ion-label>
-                        </ion-item>
-                      </ion-col>
-                    </ion-row>
-                    <ion-row class="paddedRow">
-                      <ion-col size="6">
-                        <ion-item class="ion-no-padding">
-                          <ion-label>
-                            <p>Food Preference</p>
-                            <h3 [ngClass]="user.foodPreference ? 'trueValue' : 'falseValue'">{{user.foodPreference ?
-                              'Yes'
-                              : 'No'}}</h3>
-                          </ion-label>
-                        </ion-item>
-                      </ion-col>
-                      <ion-col size="6">
-                        <ion-item class="ion-no-padding">
-                          <ion-label>
-                            <p>Stay Preference</p>
-                            <h3 [ngClass]="user.stayPreference ? 'trueValue' : 'falseValue'">{{user.stayPreference ?
-                              'Yes'
-                              : 'No'}}</h3>
-                          </ion-label>
-                        </ion-item>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </div>
-              </ion-accordion>
-            </ion-accordion-group>
-            <div class="noUsersList" *ngIf="segUsers.withoutFoodPreference.length === 0">
-              <h4>No Users Registered</h4>
-            </div>
+                <ion-grid>
+                  <ion-row class="paddedRow">
+                    <ion-col size="6">
+                      <ion-item class="ion-no-padding">
+                        <ion-label>
+                          <p>Mobile Number</p>
+                          <h3>{{user.mobileNumber}}</h3>
+                        </ion-label>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="6">
+                      <ion-item class="ion-no-padding">
+                        <ion-label>
+                          <p>Age</p>
+                          <h3>{{user.age}}</h3>
+                        </ion-label>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row class="paddedRow">
+                    <ion-col size="6">
+                      <ion-item class="ion-no-padding">
+                        <ion-label>
+                          <p>Food Preference</p>
+                          <h3 [ngClass]="user.foodPreference ? 'trueValue' : 'falseValue'">{{user.foodPreference ?
+                            'Yes'
+                            : 'No'}}</h3>
+                        </ion-label>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size="6">
+                      <ion-item class="ion-no-padding">
+                        <ion-label>
+                          <p>Stay Preference</p>
+                          <h3 [ngClass]="user.stayPreference ? 'trueValue' : 'falseValue'">{{user.stayPreference ?
+                            'Yes'
+                            : 'No'}}</h3>
+                        </ion-label>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+          <div class="noUsersList" *ngIf="segregatedUsers.withoutFoodPreference.length === 0">
+            <h4>No Users Found</h4>
+          </div>
         </ng-template>
       </ion-col>
       <ion-col size="12" *ngIf="segmentTabValue === 'settings'">
         <ion-item color="primary" (click)="deleteAllUsersDialog()">
           <ion-text>Delete All Users </ion-text>
-          <ion-button color="tertiary" slot="end" mode="ios">Delete</ion-button>
+          <ion-button color="medium" slot="end" mode="ios">Delete</ion-button>
         </ion-item>
         <ion-item color="primary" (click)="resetUniqueId('food')">
           <ion-text>Reset Food Preference Unique ID</ion-text>
-          <ion-button color="tertiary" slot="end" mode="ios">Reset</ion-button>
+          <ion-button color="medium" slot="end" mode="ios">Reset</ion-button>
         </ion-item>
         <ion-item color="primary" (click)="resetUniqueId('nonFood')">
           <ion-text>Reset Non Food Preference Unique ID</ion-text>
-          <ion-button color="tertiary" slot="end" mode="ios">Reset</ion-button>
+          <ion-button color="medium" slot="end" mode="ios">Reset</ion-button>
         </ion-item>
+        <div class="userCountHeaderContainer">
+          <h4>Users Count Details</h4>
+        </div>
+        <ion-row>
+          <ion-col size="12">
+            <ion-item color="primary">
+              <ion-text>With Food </ion-text>
+              <ion-chip color="tertiary" slot="end" mode="ios"><b>{{segregatedUsers.withFoodPreference.length}}</b></ion-chip>
+            </ion-item>
+            <ion-item color="primary">
+              <ion-text>Without Food </ion-text>
+              <ion-chip color="tertiary" slot="end" mode="ios"><b>{{segregatedUsers.withoutFoodPreference.length}}</b></ion-chip>
+            </ion-item>
+            <ion-item color="primary">
+              <ion-text>Total </ion-text>
+              <ion-chip color="success" slot="end" mode="ios"><b>{{users.length}}</b></ion-chip>
+            </ion-item>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>

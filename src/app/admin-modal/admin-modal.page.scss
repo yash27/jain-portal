@@ -1,5 +1,5 @@
 ion-content {
-    --background: linear-gradient(180deg, #e2e3c9, #e5db89) !important;
+    --background: linear-gradient(180deg, #F9E0E6, #ECB8C4) !important;
 
     .headingSection {
         .usersListText {
@@ -44,11 +44,15 @@ ion-content {
     .falseValue {
         color: red;
     }
+
+    .userCountHeaderContainer {
+        text-align: center;
+    }
 }
 
 ion-footer {
     ion-toolbar {
-        --background: linear-gradient(180deg, #e5db89, #dfd587) !important;
+        --background: linear-gradient(180deg, #ECB8C4, #d2a4af) !important;
         ion-searchbar {
             padding-top: 15px;
         }

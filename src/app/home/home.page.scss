@@ -9,7 +9,7 @@ ion-header {
 }
 
 ion-content {
-  --background: linear-gradient(180deg, #e2e3c9, #e5db89) !important;
+  --background: linear-gradient(180deg, #F9E0E6, #ECB8C4) !important;
   .contentHeaderGrid {
     ion-row {
       ion-col {
@@ -25,6 +25,7 @@ ion-content {
             border-radius: 25px !important;
             height: auto;
             display: inline;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
           }
         }
       }

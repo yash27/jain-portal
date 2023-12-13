@@ -9,6 +9,7 @@ import { HomeService } from './home-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from './user.interface';
 import { AdminModalPage } from '../admin-modal/admin-modal.page';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -159,9 +160,9 @@ export class HomePage {
   }
 
   openWhatsappChat(userDetails: User) {
-    const phoneNumber = 9039250241;
+    const phoneNumber = environment.whatsappConfiguedNumber;
     const message =
-      'आपका रजिस्ट्रेशन सफलतापूर्वक हो गया है, आपकी रजिस्ट्रेशन नंबर ' +
+      'आपका रजिस्ट्रेशन सफलतापूर्वक हो गया है, आपका रजिस्ट्रेशन नंबर ' +
       userDetails.uniqueId +
       ' है. धन्यवाद';
     const encodedMessage = encodeURIComponent(message);

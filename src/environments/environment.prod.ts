@@ -8,5 +8,6 @@ export const environment = {
     messagingSenderId: '677401035071',
     measurementId: 'G-E97DHERG3V',
   },
-  production: true
+  production: true,
+  whatsappConfiguedNumber: 7987800397
 };

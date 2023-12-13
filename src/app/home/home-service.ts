@@ -9,7 +9,8 @@ import {
   query,
   updateDoc,
   deleteDoc,
-  doc
+  doc,
+  orderBy
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { User } from './user.interface';
@@ -29,7 +30,9 @@ export class HomeService {
   private nonFoodPreferenceUniqueIdCollectionInstance = collection(this.firestore, this.nonFoodPreferenceUniqueIdInstanceName);
   private adminLoginsCollectionInstance = collection(this.firestore, this.adminLoginsInstanceName);
    
-  users$ = collectionData(this.userCollectionInstance, {idField: 'id'}) as Observable<User[]>;
+  private customQuery = query(this.userCollectionInstance, orderBy('uniqueId'));
+
+  users$ = collectionData(this.customQuery, {idField: 'id'}) as Observable<User[]>;
   foodPreferenceUniqueId$ = collectionData(this.foodPreferenceUniqueIdCollectionInstance, {idField: 'id'}) as Observable<any>;
   nonFoodPreferenceUniqueId$ = collectionData(this.nonFoodPreferenceUniqueIdCollectionInstance, {idField: 'id'}) as Observable<any>;
   adminLogins$ = collectionData(this.adminLoginsCollectionInstance, {idField: 'id'}) as Observable<any>;
@@ -70,12 +73,20 @@ export class HomeService {
     return deleteDoc(docInstance);
   }
 
-  async getSpecificUserFromFirestore(searchString: string) {
-    const q = query(
-      collection(this.firestore, this.userInstanceName),
-      where('userName', '>=', searchString),
-      where('userName', '<', searchString + '\uf8ff')
-    );
+  async getSpecificUserFromFirestore(searchString: any) {
+    let q: any;
+    if(isNaN(searchString)) {
+      q = query(
+        collection(this.firestore, this.userInstanceName),
+        where('userName', '>=', searchString),
+        where('userName', '<', searchString + '\uf8ff')
+      );
+    } else {
+      q = query(
+        collection(this.firestore, this.userInstanceName),
+        where('uniqueId', '==', Number(searchString))
+      );
+    }
     const querySnapshot = await getDocs(q);
     const userList: User[] = querySnapshot.docs.map(
       (doc) => doc.data() as User
